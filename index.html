@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QR Code Generator</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
+body{background:linear-gradient(135deg,#0f172a,#1e293b);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
+.container{background:#fff;width:100%;max-width:500px;padding:30px;border-radius:20px;box-shadow:0 15px 35px rgba(0,0,0,.3);text-align:center}
+h1{color:#111827;margin-bottom:10px}.subtitle{color:#6b7280;margin-bottom:25px}
+.input-group{display:flex;flex-direction:column;gap:15px}
+input{padding:14px;border:2px solid #d1d5db;border-radius:10px;font-size:16px;outline:none}
+input:focus{border-color:#2563eb}
+button{padding:14px;border:none;border-radius:10px;background:#2563eb;color:#fff;font-size:16px;cursor:pointer}
+#qrcode{margin-top:25px;display:flex;justify-content:center}
+.download-btn{margin-top:15px;display:none}
+.info{margin-top:25px;padding-top:20px;border-top:1px solid #e5e7eb;color:#374151;font-size:14px;line-height:1.8}
+.hero-btn{display:inline-block;margin-top:20px;padding:12px 18px;background:#111827;color:white;text-decoration:none;border-radius:10px;font-weight:bold}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>QR Code Generator</h1>
+<p class="subtitle">Generate QR Codes instantly for text, URLs, and more.</p>
+<div class="input-group">
+<input type="text" id="qrText" placeholder="Enter text or URL">
+<button onclick="generateQR()">Generate QR Code</button>
+</div>
+<div id="qrcode"></div>
+<button class="download-btn" id="downloadBtn" onclick="downloadQR()">Download QR Code</button>
+<a href="https://digitalheroesco.com" target="_blank" class="hero-btn">Built for Digital Heroes</a>
+<div class="info">
+<strong>Developer:</strong> Jitendra Sharma<br>
+<strong>Email:</strong> jitendrasharma.work@gmail.com
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+let qrContainer=document.getElementById("qrcode");
+let downloadBtn=document.getElementById("downloadBtn");
+function generateQR(){
+const text=document.getElementById("qrText").value.trim();
+if(text===""){alert("Please enter text or URL.");return;}
+qrContainer.innerHTML="";
+new QRCode(qrContainer,{text:text,width:250,height:250,colorDark:"#000000",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.H});
+setTimeout(()=>{downloadBtn.style.display="inline-block";},300);
+}
+function downloadQR(){
+const img=qrContainer.querySelector("img");
+const canvas=qrContainer.querySelector("canvas");
+let imageURL="";
+if(img){imageURL=img.src;}else if(canvas){imageURL=canvas.toDataURL("image/png");}
+const link=document.createElement("a");
+link.href=imageURL;
+link.download="qrcode.png";
+link.click();
+}
+</script>
+</body>
+</html>
